@@ -9,7 +9,7 @@ router.register(r'games', GameLeaderboardViewSet, basename='game')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('game/create/', GameCreateView.as_view(), name='game-create'),
-    path('game/delete/<int:pk>/', GameDeleteView.as_view(), name='game-delete'),    
-    path('', include(router.urls)),
+    path('game/delete/<int:pk>/', GameDeleteView.as_view(), name='game-delete'),
     path('api/daily_seed/', DailySeedView.as_view(), name='daily-seed'),
+    path('', include(router.urls)),
 ]

@@ -18,7 +18,13 @@ class GameLeaderboardViewSet(
     serializer_class = GameSerializer
     
     def get_queryset(self):
-        return Game.objects.all().order_by('-score')[:100]
+        today = timezone.now().date()
+        
+        queryset = Game.objects.filter(
+            date__date=today
+        ).order_by('-score')[:100]
+        
+        return queryset
 
     @action(detail=False, methods=['delete'])
     def destroy_all(self, request):
