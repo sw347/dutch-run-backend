@@ -1,6 +1,9 @@
 from rest_framework import generics, viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.http import JsonResponse
+from django.utils import timezone
 from .models import Game
 from .serializers import GameSerializer
 
@@ -42,3 +45,14 @@ class GameDeleteView(generics.DestroyAPIView):
             )
         
         return super().destroy(request, *args, **kwargs)
+
+class DailySeedView(APIView):
+    
+    def get(self, request):
+        today_str = timezone.now().strftime('%Y%m%d')
+        
+        return JsonResponse({
+            'status': 'success',
+            'date': today_str,
+            'seed': int(today_str)
+        })
