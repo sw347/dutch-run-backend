@@ -6,11 +6,27 @@ from django.http import JsonResponse
 from django.utils import timezone
 from .models import Game
 from .serializers import GameSerializer, GameRankSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 class GameCreateView(generics.CreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
+@method_decorator(cache_page(60 * 5), name='list')
+class GameTopLankView(generics.ListAPIView):
+    serializer_class = GameSerializer
+
+    def get_queryset(self):
+        today = timezone.now().date()
+        
+        queryset = Game.objects.filter(
+            date__date=today
+        ).order_by('-score')[:10]
+        
+        return queryset
+
+@method_decorator(cache_page(60 * 5), name='list')
 class GameLeaderboardViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
@@ -63,6 +79,7 @@ class GameDeleteView(generics.DestroyAPIView):
         
         return super().destroy(request, *args, **kwargs)
 
+@method_decorator(cache_page(60 * 5), name='list')
 class DailySeedView(APIView):
     
     def get(self, request):
