@@ -22,7 +22,7 @@ class GameTopLankView(generics.ListAPIView):
         
         queryset = Game.objects.filter(
             date__date=today
-        ).order_by('-score')[:10]
+        ).order_by('-score')[:3]
         
         return queryset
 
@@ -51,18 +51,23 @@ class GameLeaderboardViewSet(
                 status=status.HTTP_401_UNAUTHORIZED
             )
         
-        today_date = timezone.localtime().date()    
+        Game.objects.all().delete()
+        return Response(
+            {"detail": "All records have been successfully deleted."},
+            status=status.HTTP_204_NO_CONTENT
+        )
+        # today_date = timezone.localtime().date()    
         
-        deleted_count, _ = self.get_queryset().filter(
-            created_at__date=today_date # 오늘 날짜와 일치하는 레코드만 필터링합니다.
-        ).delete()
+        # deleted_count, _ = self.get_queryset().filter(
+        #     created_at__date=today_date # 오늘 날짜와 일치하는 레코드만 필터링합니다.
+        # ).delete()
     
-        if deleted_count > 0:
-            message = f"{deleted_count} records for today ({today_date}) have been successfully deleted."
-            return Response({"detail": message}, status=status.HTTP_204_NO_CONTENT)
-        else:
-            message = f"No records found for today ({today_date}) to delete."
-            return Response({"detail": message}, status=status.HTTP_200_OK)
+        # if deleted_count > 0:
+        #     message = f"{deleted_count} records for today ({today_date}) have been successfully deleted."
+        #     return Response({"detail": message}, status=status.HTTP_204_NO_CONTENT)
+        # else:
+        #     message = f"No records found for today ({today_date}) to delete."
+        #     return Response({"detail": message}, status=status.HTTP_200_OK)
     
 class GameDeleteView(generics.DestroyAPIView):
     queryset = Game.objects.all()
