@@ -13,7 +13,7 @@ class GameCreateView(generics.CreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
-@method_decorator(cache_page(60 * 5), name='list')
+@method_decorator(cache_page(60 * 5), name='get')
 class GameTopLankView(generics.ListAPIView):
     serializer_class = GameSerializer
 
@@ -26,7 +26,7 @@ class GameTopLankView(generics.ListAPIView):
         
         return queryset
 
-@method_decorator(cache_page(60 * 5), name='list')
+@method_decorator(cache_page(60 * 5), name='get')
 class GameLeaderboardViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
