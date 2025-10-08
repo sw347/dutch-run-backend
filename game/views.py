@@ -26,7 +26,7 @@ class GameTopLankView(generics.ListAPIView):
         
         return queryset
 
-@method_decorator(cache_page(60 * 5), name='get')
+@method_decorator(cache_page(60 * 5), name='list') 
 class GameLeaderboardViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
@@ -79,7 +79,7 @@ class GameDeleteView(generics.DestroyAPIView):
         
         return super().destroy(request, *args, **kwargs)
 
-@method_decorator(cache_page(60 * 5), name='list')
+@method_decorator(cache_page(60 * 5), name='get') 
 class DailySeedView(APIView):
     
     def get(self, request):
