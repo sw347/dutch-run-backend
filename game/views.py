@@ -17,7 +17,7 @@ class GameCreateView(generics.CreateAPIView):
 class GameTopLankView(generics.ListAPIView):
     serializer_class = GameSerializer
 
-    def list(self):
+    def get_queryset(self):
         today = timezone.now().date()
         
         queryset = Game.objects.filter(
