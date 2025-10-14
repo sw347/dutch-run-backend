@@ -4,11 +4,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-STATIC_ROOT = BASE_DIR / 'staticfiles' 
-STATIC_URL = '/static/'
-
-SECRET_KEY = 'django-insecure-!upb8gio2v=0087ps&=v!&ov2v8=-@icqt**3y@@&+u1^ev+j7'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = 'RENDER' not in os.environ
 
@@ -26,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'game',
     'rest_framework',
@@ -97,6 +94,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
