@@ -17,7 +17,7 @@ class GameCreateView(generics.CreateAPIView):
 class GameTopLankView(generics.ListAPIView):
     serializer_class = GameSerializer
 
-    def get_queryset(self):
+    def list(self):
         today = timezone.now().date()
         
         queryset = Game.objects.filter(
@@ -42,33 +42,6 @@ class GameLeaderboardViewSet(
         
         return queryset
 
-    @action(detail=False, methods=['delete'])
-    def destroy_all(self, request):
-        password = request.query_params.get('password')
-        if password != '20250916':
-            return Response(
-                {"detail": "Authentication credentials were not provided or are incorrect."},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-        
-        Game.objects.all().delete()
-        return Response(
-            {"detail": "All records have been successfully deleted."},
-            status=status.HTTP_204_NO_CONTENT
-        )
-        # today_date = timezone.localtime().date()    
-        
-        # deleted_count, _ = self.get_queryset().filter(
-        #     created_at__date=today_date # 오늘 날짜와 일치하는 레코드만 필터링합니다.
-        # ).delete()
-    
-        # if deleted_count > 0:
-        #     message = f"{deleted_count} records for today ({today_date}) have been successfully deleted."
-        #     return Response({"detail": message}, status=status.HTTP_204_NO_CONTENT)
-        # else:
-        #     message = f"No records found for today ({today_date}) to delete."
-        #     return Response({"detail": message}, status=status.HTTP_200_OK)
-    
 class GameDeleteView(generics.DestroyAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer

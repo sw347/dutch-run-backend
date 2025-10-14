@@ -6,7 +6,7 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ['username', 'score', 'ghost_data']
     
-class GameRankSerializer(serializers.Serializer):
+class GameRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['username', 'score']
